@@ -32,7 +32,6 @@ namespace SecureFolder
             }
             return pwd;
         }
-
         internal static string ToPlainString(this SecureString value)
         {
             IntPtr bstr = Marshal.SecureStringToBSTR(value);

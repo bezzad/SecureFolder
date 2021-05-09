@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security;
 
 namespace SecureFolder
 {
@@ -14,7 +13,7 @@ namespace SecureFolder
             ─▀▀▀▄▄ █▀▀ █── █──█ █▄▄▀ █▀▀ 　 ░█▀▀▀ █──█ █── █──█ █▀▀ █▄▄▀ 
             ░█▄▄▄█ ▀▀▀ ▀▀▀ ─▀▀▀ ▀─▀▀ ▀▀▀ 　 ░█─── ▀▀▀▀ ▀▀▀ ▀▀▀─ ▀▀▀ ▀─▀▀");
             Console.WriteLine("\n\n");
-            
+
             var state = IsEncryption(args);
             if (state.HasFlag(State.Encryption))
             {
@@ -73,6 +72,9 @@ namespace SecureFolder
         {
             Console.Write("Enter Password: ");
             var password = Helper.GetPassword();
+            var secure = new SecureFile(password);
+            
+
         }
 
         private static void Decrypt(bool remove)
