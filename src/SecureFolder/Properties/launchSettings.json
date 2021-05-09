@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SecureFolder": {
+      "commandName": "Project",
+      "commandLineArgs": "-e -remove"
+    }
+  }
+}
