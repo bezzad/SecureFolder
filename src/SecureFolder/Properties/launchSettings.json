@@ -2,7 +2,7 @@
   "profiles": {
     "SecureFolder": {
       "commandName": "Project",
-      "commandLineArgs": "-d --remove -a \"D:\\Sample\" -p 123456"
+      "commandLineArgs": "-d --remove -a \"D:\\Sample\" "
     }
   }
 }
