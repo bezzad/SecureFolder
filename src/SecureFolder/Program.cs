@@ -25,7 +25,7 @@ namespace SecureFolder
 
             Parser.Default.ParseArguments<Options>(args).WithParsed(ExecuteCommands);
             
-            Console.WriteLine("\n\n Finished :)");
+            Console.WriteLine("\n Finished :)");
             Console.Read();
         }
 
