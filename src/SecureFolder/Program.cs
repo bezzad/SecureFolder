@@ -23,6 +23,7 @@ namespace SecureFolder
             Console.WriteLine("\n\n");
 
             Parser.Default.ParseArguments<Options>(args).WithParsed(ExecuteCommands);
+            Console.WriteLine("Finished :)");
             Console.Read();
         }
 
@@ -90,6 +91,7 @@ namespace SecureFolder
         }
         private static void Decrypt(FileInfo file)
         {
+            _secureFile.DecryptFile(file.FullName);
             if (_opt.Remove)
             {
                 Remove(file);

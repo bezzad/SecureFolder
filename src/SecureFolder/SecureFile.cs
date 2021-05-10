@@ -10,16 +10,16 @@ namespace SecureFolder
     {
         private const int BufferSize = 65536;
         private const string GlobalSalt = @"!@#$%^&*H\,g,d@1";
-        private AesCryptoServiceProvider _algorithm;
-        private ICryptoTransform _decryptor;
-        private ICryptoTransform _encryptor;
+        private readonly AesCryptoServiceProvider _algorithm;
+        private readonly ICryptoTransform _decryptor;
+        private readonly ICryptoTransform _encryptor;
 
         public SecureFile(string password)
         {
             var pass = password.PadRight(password.Length + (16 - password.Length % 16), '#');
             _algorithm = new AesCryptoServiceProvider {
                 BlockSize = 128,
-                KeySize = 128,
+                KeySize = 256,
                 Key = Encoding.UTF8.GetBytes(pass),
                 IV = Encoding.ASCII.GetBytes(GlobalSalt.PadRight(16, '#')),
                 Padding = PaddingMode.PKCS7,
