@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,10 +14,9 @@ namespace SecureFolder
         private ICryptoTransform _decryptor;
         private ICryptoTransform _encryptor;
 
-        public SecureFile(SecureString password)
+        public SecureFile(string password)
         {
-            var pass = password.ToPlainString();
-            pass = pass.PadRight(pass.Length + (16 - pass.Length % 16), '#');
+            var pass = password.PadRight(password.Length + (16 - password.Length % 16), '#');
             _algorithm = new AesCryptoServiceProvider {
                 BlockSize = 128,
                 KeySize = 128,

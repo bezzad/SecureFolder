@@ -1,12 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using CommandLine;
+﻿using CommandLine;
+using System;
 
 namespace SecureFolder
 {
     class Program
     {
+        private static SecureFile _secureFile;
+        private static Options _opt;
+
         static void Main(string[] args)
         {
             Console.WriteLine(@"
@@ -21,25 +22,44 @@ namespace SecureFolder
 
         private static void SetState(Options opt)
         {
+            _opt = opt;
+            if ((opt.Encrypt || opt.Decrypt) &&
+                string.IsNullOrWhiteSpace(opt.Password))
+            {
+                opt.Password = GetPassword();
+            }
+
             if (opt.Encrypt)
             {
-
+                _secureFile = new SecureFile(opt.Password);
+                Encrypt();
+            }
+            else if (opt.Decrypt)
+            {
+                _secureFile = new SecureFile(opt.Password);
+                Decrypt();
             }
         }
 
-        private static void Encrypt(bool remove)
+        private static string GetPassword()
         {
             Console.Write("Enter Password: ");
-            var password = Helper.GetPassword();
-            var secure = new SecureFile(password);
-            
+            return Helper.GetPassword().ToPlainString();
+        }
+
+        private static string[] GetFiles(string dir)
+        {
 
         }
 
-        private static void Decrypt(bool remove)
+        private static void Encrypt()
         {
-            Console.Write("Enter Password: ");
-            var password = Helper.GetPassword();
+
+        }
+
+        private static void Decrypt()
+        {
+
         }
     }
 }
