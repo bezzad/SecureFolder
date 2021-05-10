@@ -23,7 +23,10 @@ namespace SecureFolder
             ░█▄▄▄█ ▀▀▀ ▀▀▀ ─▀▀▀ ▀─▀▀ ▀▀▀ 　 ░█─── ▀▀▀▀ ▀▀▀ ▀▀▀─ ▀▀▀ ▀─▀▀");
             Console.WriteLine("\n\n");
 
-            Parser.Default.ParseArguments<Options>(args).WithParsed(ExecuteCommands);
+            Parser.Default.ParseArguments<Options>(args).WithParsed(ExecuteCommands).WithNotParsed(err =>
+            {
+                Console.WriteLine("Given arguments is not valid!");
+            });
             
             Console.WriteLine("\n Finished :)");
             Console.Read();
