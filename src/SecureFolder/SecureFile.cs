@@ -6,23 +6,24 @@ using System.Text;
 
 namespace SecureFolder
 {
-    public class SecureFile : IDisposable
+    public static class SecureFile
     {
         private const int BufferSize = 65536;
         private const string GlobalSalt = @"!@#$%^&*H\,g,d@1";
-        private readonly AesCryptoServiceProvider _algorithm;
-        private readonly ICryptoTransform _decryptor;
-        private readonly ICryptoTransform _encryptor;
+        private static AesCryptoServiceProvider _algorithm;
+        private static ICryptoTransform _decryptor;
+        private static ICryptoTransform _encryptor;
 
-        public SecureFile(string password)
+        public static void CreateAlgorithm(string password)
         {
+            Clear();
             var pass = password.PadRight(password.Length + (16 - password.Length % 16), '#');
             _algorithm = new AesCryptoServiceProvider {
                 BlockSize = 128,
                 KeySize = 256,
                 Key = Encoding.UTF8.GetBytes(pass),
                 IV = Encoding.ASCII.GetBytes(GlobalSalt.PadRight(16, '#')),
-                Padding = PaddingMode.PKCS7,
+                Padding = PaddingMode.Zeros,
                 Mode = CipherMode.ECB
             };
 
@@ -30,8 +31,7 @@ namespace SecureFolder
             _encryptor = _algorithm.CreateEncryptor(_algorithm.Key, _algorithm.IV);
             _decryptor = _algorithm.CreateDecryptor(_algorithm.Key, _algorithm.IV);
         }
-
-        public void EncryptFile(string filePath)
+        public static void EncryptFile(string filePath)
         {
             var filename = Path.GetFileName(filePath);
             var dir = Path.GetDirectoryName(filePath);
@@ -41,7 +41,7 @@ namespace SecureFolder
 
             CryptoFile(filePath, outputPath, true);
         }
-        public void DecryptFile(string filePath)
+        public static void DecryptFile(string filePath)
         {
             var encryptedFilename = Path.GetFileName(filePath);
             var dir = Path.GetDirectoryName(filePath);
@@ -51,7 +51,7 @@ namespace SecureFolder
 
             CryptoFile(filePath, outputPath, false);
         }
-        private void CryptoFile(string inputPath, string outputPath, bool isEncryption)
+        private static void CryptoFile(string inputPath, string outputPath, bool isEncryption)
         {
             var total = 0L;
             var buffer = new byte[BufferSize];
@@ -73,24 +73,24 @@ namespace SecureFolder
             }
         }
 
-        public string Encrypt(string name)
+        public static string Encrypt(string name)
         {
             var nameBytes = Encoding.UTF8.GetBytes(name);
             var base64 = Convert.ToBase64String(nameBytes);
 
             return base64;
         }
-        public string Decrypt(string encryptedName)
+        public static string Decrypt(string encryptedName)
         {
             var base64Bytes = Convert.FromBase64String(encryptedName);
             var originName = Encoding.UTF8.GetString(base64Bytes);
             return originName;
         }
-        public byte[] Encrypt(byte[] rawBytes)
+        public static byte[] Encrypt(byte[] rawBytes)
         {
             return PerformCrypto(_encryptor, rawBytes);
         }
-        public byte[] Decrypt(byte[] encryptedByes)
+        public static byte[] Decrypt(byte[] encryptedByes)
         {
             return PerformCrypto(_decryptor, encryptedByes);
         }
@@ -103,10 +103,10 @@ namespace SecureFolder
             return transformed;
         }
 
-        public void Dispose()
+        public static void Clear()
         {
-            _decryptor?.Dispose();
             _encryptor?.Dispose();
+            _decryptor?.Dispose();
             _algorithm?.Dispose();
         }
     }

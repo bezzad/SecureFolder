@@ -9,11 +9,11 @@ namespace SecureFolder.Test
         {
             // arrange
             var name = "#1234567890 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ.exe";
-            var secureFile = new SecureFile("12345678");
+            SecureFile.CreateAlgorithm("123");
 
             // act
-            var encryptedName = secureFile.Encrypt(name);
-            var decryptedName = secureFile.Decrypt(encryptedName);
+            var encryptedName = SecureFile.Encrypt(name);
+            var decryptedName = SecureFile.Decrypt(encryptedName);
 
             // assert
             Assert.Equal(name, decryptedName);

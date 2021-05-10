@@ -9,7 +9,6 @@ namespace SecureFolder
 {
     class Program
     {
-        private static SecureFile _secureFile;
         private static Options _opt;
         private static List<FileInfo> _files;
         private static readonly string ExecutionPath = Assembly.GetEntryAssembly()?.Location;
@@ -56,7 +55,7 @@ namespace SecureFolder
             {
                 opt.Password = GetPassword();
             }
-            _secureFile = new SecureFile(opt.Password);
+            SecureFile.CreateAlgorithm(opt.Password);
         }
         private static string GetPassword()
         {
@@ -83,7 +82,7 @@ namespace SecureFolder
         }
         private static void Encrypt(FileInfo file)
         {
-            _secureFile.EncryptFile(file.FullName);
+            SecureFile.EncryptFile(file.FullName);
             if (_opt.Remove)
             {
                 Remove(file);
@@ -91,7 +90,7 @@ namespace SecureFolder
         }
         private static void Decrypt(FileInfo file)
         {
-            _secureFile.DecryptFile(file.FullName);
+            SecureFile.DecryptFile(file.FullName);
             if (_opt.Remove)
             {
                 Remove(file);
