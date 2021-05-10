@@ -76,15 +76,14 @@ namespace SecureFolder
         public string Encrypt(string name)
         {
             var nameBytes = Encoding.UTF8.GetBytes(name);
-            var encryptedBytes = Encrypt(nameBytes);
-            var base64 = Convert.ToBase64String(encryptedBytes);
+            var base64 = Convert.ToBase64String(nameBytes);
+
             return base64;
         }
         public string Decrypt(string encryptedName)
         {
             var base64Bytes = Convert.FromBase64String(encryptedName);
-            var decryptedBytes = Decrypt(base64Bytes);
-            var originName = Encoding.UTF8.GetString(decryptedBytes);
+            var originName = Encoding.UTF8.GetString(base64Bytes);
             return originName;
         }
         public byte[] Encrypt(byte[] rawBytes)
