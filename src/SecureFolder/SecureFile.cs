@@ -8,7 +8,7 @@ namespace SecureFolder
 {
     public static class SecureFile
     {
-        private const int BufferSize = 65536;
+        private const int BufferSize = 65536; // Note: changing this not effected on encryption or decryption speed
         private const string GlobalSalt = @"!@#$%^&*H\,g,d@1";
         private static AesCryptoServiceProvider _algorithm;
         private static ICryptoTransform _decryptor;

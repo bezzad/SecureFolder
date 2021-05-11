@@ -35,7 +35,7 @@ namespace SecureFolder
         private static void ExecuteCommands(Options opt)
         {
             _opt = opt;
-            Console.WriteLine(opt.Encrypt ? "Encrypting" : "Decrypting");
+            Console.WriteLine($"{(opt.Encrypt ? "Encrypting" : "Decrypting")} {(string.IsNullOrWhiteSpace(opt.Directory) ? opt.FileName : opt.Directory)}");
             SetValidPassword(opt);
             FetchValidFiles(opt);
 
