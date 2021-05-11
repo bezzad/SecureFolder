@@ -13,6 +13,7 @@ namespace SecureFolder
         private static AesCryptoServiceProvider _algorithm;
         private static ICryptoTransform _decryptor;
         private static ICryptoTransform _encryptor;
+        public static event EventHandler<ProgressChangedEventArg> ProgressChanged;
 
         public static void CreateAlgorithm(string password)
         {
@@ -69,7 +70,7 @@ namespace SecureFolder
 
                 writerStream.Write(result);
                 total += readCount;
-                Console.Title = $"{inputPath} {total} bytes {(isEncryption ? "encrypted" : "decrypted")}";
+                OnProgressChanged(new ProgressChangedEventArg() { FileName = inputPath, TotalBytes = readerStream.Length, ProgressedBytes = total });
             }
         }
 
@@ -108,6 +109,11 @@ namespace SecureFolder
             _encryptor?.Dispose();
             _decryptor?.Dispose();
             _algorithm?.Dispose();
+        }
+
+        private static void OnProgressChanged(ProgressChangedEventArg e)
+        {
+            ProgressChanged?.Invoke(null, e);
         }
     }
 }
